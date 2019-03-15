@@ -36,6 +36,21 @@ class Griddler:
             f.write(str(self.col_reqs) + "\n")
             f.write(str(self.gridd)+ "\n")
             #f.write(str(self.gridd.T))
+    
+    def get_gridd(self):
+        return self.gridd
+
+    def get_rows(self):
+        return self.rows
+
+    def get_cols(self):
+        return self.cols
+
+    def set_row_gridd(self, index, intlist):
+        self.gridd[index] = intlist
+
+    def set_col_gridd(self, index, intlist):
+        self.gridd.T[index] = intlist
 
     def get_row_gridd(self, index):
         return self.gridd[index]
@@ -58,6 +73,9 @@ class Griddler:
     def mark_solved(self):
         self.solved = True
         self.save_to_file()
+    
+    def __eq__(self, other):
+        return np.array_equal(self.get_gridd(), other.get_gridd())
 
 def main():
     pear = Griddler("pear_small_unsolved.gridd")
@@ -68,5 +86,14 @@ def main():
     print(pear.get_col_gridd(0))
     print(pear.get_col_reqs(0))
     print(pear.get_col_gridd_as_bin(0))
+    gridd = np.zeros((3, 4), dtype=np.int)
+    gridd[0] = [1,2,3,4]
+    print (str(gridd))
+    gridd.T[0] = [1,2,3]
+    print (str(gridd))
+    gridd[1] = 6
+    print (str(gridd))
+
+    gridd == gridd
 
 main()

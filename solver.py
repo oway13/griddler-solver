@@ -1,15 +1,19 @@
+import griddler
+
 #Input: List of 0/1 integers
 #Returns: String of 0/1 integers
 def toBin(intlist):
     return ''.join(str(e) for e in intlist)
 
-#Input: list of equal length bit strings
+#Input: list of int lists of equal length
+#Process: Converts each list to a binary string,
+#         then bitwise-ANDs them to find the common bits
 #Returns: bit string of common bits
-def common(bitlist):
-    comlist = int(bitlist[0], 2)
-    strlen = len(bitlist[0])
-    for bitstring in bitlist:
-        bint = int(bitstring, 2)
+def common(intlistlist):
+    comlist = int(toBin(intlistlist[0]), 2)
+    strlen = len(intlistlist[0])
+    for bitstring in intlistlist:
+        bint = int(toBin(bitstring), 2)
         comlist = bint & comlist
     comlist = bin(comlist)
     return comlist.zfill(strlen)
@@ -18,7 +22,7 @@ def common(bitlist):
 #        intlist: Single intlist to match against
 #Returns: Boolean, whether or not they match
 def match(matchlist, intlist):
-    match = int(matchlist, 2)
+    match = int(toBin(matchlist), 2)
     qint = int(toBin(intlist), 2)
     return match & qint == match
 
@@ -88,42 +92,7 @@ def intlist_gen(listlen, intreqs):
             if intlist[-1] == 0:
                 intlist.pop()
             intlistlist.append(intlist)
-        # b_used = betweens
-        # #All blanks used before each
-        # for i in range(len(intreqs)):
-        #     reqs_used = 0
-        #     #All blanks used before the first one
-        #     # if reqs_used == 0:
-        #     #     for j in range(blanks-b_used):
-        #     #         intlist.append(0)
-        #     #     for k in range(reqs_used, len(intreqs)):
-        #     #         for l in range(intreqs[k]):
-        #     #             intlist.append(1)
-        #     #         intlist.append(0)
-        #     # else:
-        #     for j in range(reqs_used+1):
-        #         intlist = []
-        #         reqs_used_now = 0
-        #         for k in range(reqs_used, len(intreqs)):
-        #             for l in range(intreqs[k]):
-        #                 intlist.append(1)
-        #             intlist.append(0)
-        #             b_used += 1
-        #         for j in range(blanks-b_used):
-        #             intlist.append(0)
-        #         for k in range(reqs_used_now, len(intreqs)):
-        #             for l in range(intreqs[k]):
-        #                 intlist.append(1)
-        #             reqs_used_now += 1
-        #             intlist.append(0)
-        #         intlist.pop()
-        #         intlistlist.append(intlist)
-        #     reqs_used += 1
-
-            
-
-#Could probably be rewritten to be recursive
-
+            #TODO: Generate Where Zeros are distributed
 
     return intlistlist
 
@@ -146,8 +115,37 @@ def remove_nonmatches(matchlist, intlistlist):
 #         know are correct.
 #Returns: list of 0/1 integers, hopefully partially solved, but not all will be
 def partial_solve_array(intlist, intreqs):
-    return
+    intlistlist = intlist_gen(len(intlist), intreqs)
+    if intlistlist == []:
+        return intlist
+    intlistlist = remove_nonmatches(intlist, intlistlist)
+    if intlistlist == []:
+        return intlist
+    #print("Intlistlist before calling common: "+str(intlistlist))
+    commonbits = common(intlistlist)
+    return list(commonbits)
 
+def partial_solve_gridd(griddler):
+    for row in range(griddler.get_rows()):
+        oldrow = griddler.get_row_gridd(row)
+        newrow = partial_solve_array(oldrow, griddler.get_row_reqs(row))
+        griddler.set_row_gridd(row, newrow)
+    for col in range(griddler.get_cols()):
+        oldcol = griddler.get_col_gridd(col)
+        newcol = partial_solve_array(oldcol, griddler.get_col_reqs(col))
+        griddler.set_col_gridd(col, newcol)
+
+def test():
+    pear = griddler.Griddler("pear_small_unsolved.gridd")
+    peach = pear
+    partial_solve_gridd(pear)
+    while(not pear == peach):
+        peach = pear
+        partial_solve_gridd(pear)
+        print("attempt")
+    pear.save_to_file()
+
+test()
 # print(common(['1010', '1010', '1011']))
 # print(common(['0010', '0010', '0011']))
 
