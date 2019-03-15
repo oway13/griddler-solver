@@ -31,7 +31,44 @@ def bin(s):
 #       intreqs: ordered list for order and length of runs
 #Returns: list of lists with proper order and length of runs
 def intlist_gen(listlen, intreqs):
-    return
+    intlistlist = []
+    blanks = listlen - sum(intreqs)
+    betweens = len(intreqs) - 1
+
+    #If multiple, but only one possible value
+    if blanks == betweens:
+        intlist = []
+        for i in range(len(intreqs)):
+            for j in range(intreqs[i]):
+                intlist.append(1)
+            intlist.append(0)
+        intlist.pop()
+        intlistlist.append(intlist)
+        return intlistlist
+    #If one, but only one possible value
+    elif blanks == 0 and betweens == 0:
+        intlist = []
+        for i in range(intreqs[0]):
+            intlist.append(1)
+        intlistlist.append(intlist)
+        return intlistlist
+    #If one, but many possible values
+    elif betweens == 0 and not blanks == 0:
+        for i in range(blanks+1):
+            intlist = []
+            b_used = 0
+            for j in range(i):
+                intlist.append(0)
+                b_used += 1
+            for k in range(intreqs[0]):
+                intlist.append(1)
+            for l in range(blanks - b_used):
+                intlist.append(0)
+            intlistlist.append(intlist)
+
+
+
+    return intlistlist
 
 #Inputs: matchlist: list of positions that all intlists must have set
 #        intlistlist: list of generated intlists that haven't been filtered
@@ -56,3 +93,20 @@ def partial_solve_array(intlist, intreqs):
 
 print(common(['1010', '1010', '1011']))
 print(common(['0010', '0010', '0011']))
+
+
+print("If multiple, but only one possible value")
+print(intlist_gen(6, [1,2,1]))
+print("If one, but only one possible value")
+print(intlist_gen(6, [6]))
+print("If one, but many possible values")
+print(intlist_gen(6, [2]))
+print(intlist_gen(6, [1]))
+print(intlist_gen(6, [3]))
+print("If many, but many possible values")
+print(intlist_gen(6, [2, 1]))
+print(intlist_gen(6, [1, 2]))
+print(intlist_gen(6, [2, 2]))
+print(intlist_gen(6, [1, 1, 1]))
+print(intlist_gen(7, [1, 2, 1]))
+print(intlist_gen(7, [2, 1, 1]))
