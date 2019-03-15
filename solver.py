@@ -37,7 +37,11 @@ def intlist_gen(listlen, intreqs):
 #        intlistlist: list of generated intlists that haven't been filtered
 #Returns: list of intlists with non-matching intlists removed
 def remove_nonmatches(matchlist, intlistlist):
-    return
+    filtered_intlistlist = []
+    for intlist in intlistlist:
+        if match(matchlist, intlist):
+            filtered_intlistlist.append(intlist)
+    return filtered_intlistlist
 
 
 #Inputs: intlist: list of 0/1 integers, 
