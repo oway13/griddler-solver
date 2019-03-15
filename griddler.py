@@ -11,15 +11,18 @@ class Griddler:
             row_reqs = ast.literal_eval(f.readline())
             col_reqs = ast.literal_eval(f.readline())
             gridd = f.readline()
-        self.rows = dimensions[0]
-        self.cols = dimensions[1]
-        self.row_reqs = row_reqs
-        self.col_reqs = col_reqs
-        self.name = gridd_file
-        if gridd:
-            self.gridd = ast.literal_eval(gridd)
-        else:
-            self.gridd = np.zeros((self.rows, self.cols), dtype=np.int)
+            self.rows = dimensions[0]
+            self.cols = dimensions[1]
+            self.row_reqs = row_reqs
+            self.col_reqs = col_reqs
+            self.name = gridd_file
+            if gridd:
+                self.gridd = ast.literal_eval(gridd)
+                #TODO: See above
+            else:
+                self.gridd = np.zeros((self.rows, self.cols), dtype=np.int)
+            
+        
 
     def save_to_file(self):
         if not self.solved:
