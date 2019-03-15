@@ -55,6 +55,10 @@ class Griddler:
     def get_col_reqs(self, index):
         return self.col_reqs[index]
 
+    def mark_solved(self):
+        self.solved = True
+        self.save_to_file()
+
 def main():
     pear = Griddler("pear_small_unsolved.gridd")
     pear.save_to_file()
