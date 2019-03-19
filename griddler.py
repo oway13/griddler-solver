@@ -95,5 +95,3 @@ def main():
     print (str(gridd))
 
     gridd == gridd
-
-main()
