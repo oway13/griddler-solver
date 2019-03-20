@@ -31,12 +31,59 @@ def match(matchlist, intlist):
 def bin(s):
     return str(s) if s<=1 else bin(s>>1) + str(s&1)
 
+#https://stackoverflow.com/questions/39192777/how-to-split-a-list-into-n-groups-in-all-possible-combinations-of-group-length-a
+def sorted_k_partitions(seq, k):
+    """Returns a list of all unique k-partitions of `seq`.
+
+    Each partition is a list of parts, and each part is a tuple.
+
+    The parts in each individual partition will be sorted in shortlex
+    order (i.e., by length first, then lexicographically).
+
+    The overall list of partitions will then be sorted by the length
+    of their first part, the length of their second part, ...,
+    the length of their last part, and then lexicographically.
+    """
+    n = len(seq)
+    groups = []  # a list of lists, currently empty
+
+    def generate_partitions(i):
+        if i >= n:
+            yield list(map(tuple, groups))
+        else:
+            if n - i > k - len(groups):
+                for group in groups:
+                    group.append(seq[i])
+                    yield from generate_partitions(i + 1)
+                    group.pop()
+
+            if len(groups) < k:
+                groups.append([seq[i]])
+                yield from generate_partitions(i + 1)
+                groups.pop()
+
+    result = generate_partitions(0)
+
+    # Sort the parts in each partition in shortlex order
+    result = [sorted(ps, key = lambda p: (len(p), p)) for ps in result]
+    # Sort partitions by the length of each part, then lexicographically.
+    result = sorted(result, key = lambda ps: (*map(len, ps), ps))
+
+    intlistlist = []
+    for i in result:
+        if i not in intlistlist:
+            intlistlist.append(i)
+
+    return intlistlist
+
+
 #Input: listlen: Total length of list to work within
 #       intreqs: ordered list for order and length of runs
 #Returns: list of lists with proper order and length of runs
 def intlist_gen(listlen, intreqs):
     intlistlist = []
     blanks = listlen - sum(intreqs)
+    zeros = blanks
     betweens = len(intreqs) - 1
 
     #If multiple, but only one possible value
@@ -70,7 +117,7 @@ def intlist_gen(listlen, intreqs):
     #If multiple, but many possible values
     else:
         #For each run in the list of runs
-        for run_num in range(len(intreqs)):
+        for run_num in range(len(intreqs)+1):
             intlist = []
             b_remains = blanks - betweens
             #If we are past runs, put runs that we are past first
@@ -92,7 +139,22 @@ def intlist_gen(listlen, intreqs):
             if intlist[-1] == 0:
                 intlist.pop()
             intlistlist.append(intlist)
-            #TODO: Generate Where Zeros are distributed
+        #Generate the rest of the combinations
+        #For comb each z_comb
+        holes = len(intreqs) + 1
+        z_inter_list = [0 for _ in range(zeros)]
+        z_combs = sorted_k_partitions(z_inter_list, holes)
+        for comb in z_combs:
+            intlist = []
+            #For each 0 run in one comb
+            for z_run in range(len(comb)):
+                #Add that many zeros to the list
+                intlist.extend([0 for _ in range(len(comb[z_run]))])
+                #For each 1 run in intreqs
+                if not z_run == len(intreqs):
+                    #Add that many ones to the list
+                    intlist.extend([1 for _ in range(intreqs[z_run])])
+            intlistlist.append(intlist)
 
     return intlistlist
 
@@ -160,11 +222,12 @@ test()
 # print(intlist_gen(6, [3]))
 # print("If many, but many possible values")
 # print("\t All zeros before one object")
-# print(intlist_gen(6, [2, 1])) #[001101, 110001]
-# print(intlist_gen(6, [1, 2])) #[001011, 100011]
-# print(intlist_gen(6, [2, 2])) #[011011, 110011]
-# print(intlist_gen(6, [1, 1])) #[000101, 100001]
-# print(intlist_gen(6, [1, 1, 1])) #[010101, 100101, 101001]
-# print(intlist_gen(7, [1, 2, 1])) #[0101101, 1001101, 1011001]
-# print(intlist_gen(7, [2, 1, 1])) #[0110101, 1100101, 1101001]
+print(intlist_gen(6, [2, 1])) #[001101, 110001, 011010, 110100]
+print(intlist_gen(6, [1, 2])) #[001011, 100011, 010110, 101100]
+print(intlist_gen(6, [2, 2])) #[011011, 110011]
+print(intlist_gen(6, [1, 1])) #[000101, 100001]
+print(intlist_gen(6, [1, 1, 1])) #[010101, 100101, 101001]
+print(intlist_gen(7, [1, 2, 1])) #[0101101, 1001101, 1011001]
+print(intlist_gen(7, [2, 1, 1])) #[0110101, 1100101, 1101001]
+print(intlist_gen(7, [1, 1])) #[0000101]
 # print("\t One extra zero put")
