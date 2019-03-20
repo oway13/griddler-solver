@@ -201,7 +201,8 @@ def test():
     pear = griddler.Griddler("pear_small_unsolved.gridd")
     peach = pear
     partial_solve_gridd(pear)
-    while(not pear == peach):
+    # while(not pear == peach):
+    for i in range(30):
         peach = pear
         partial_solve_gridd(pear)
         print("attempt")
@@ -222,12 +223,12 @@ test()
 # print(intlist_gen(6, [3]))
 # print("If many, but many possible values")
 # print("\t All zeros before one object")
-print(intlist_gen(6, [2, 1])) #[001101, 110001, 011010, 110100]
-print(intlist_gen(6, [1, 2])) #[001011, 100011, 010110, 101100]
-print(intlist_gen(6, [2, 2])) #[011011, 110011]
-print(intlist_gen(6, [1, 1])) #[000101, 100001]
-print(intlist_gen(6, [1, 1, 1])) #[010101, 100101, 101001]
-print(intlist_gen(7, [1, 2, 1])) #[0101101, 1001101, 1011001]
-print(intlist_gen(7, [2, 1, 1])) #[0110101, 1100101, 1101001]
-print(intlist_gen(7, [1, 1])) #[0000101]
+# print(intlist_gen(6, [2, 1])) #[001101, 110001, 011010, 110100]
+# print(intlist_gen(6, [1, 2])) #[001011, 100011, 010110, 101100]
+# print(intlist_gen(6, [2, 2])) #[011011, 110011]
+# print(intlist_gen(6, [1, 1])) #[000101, 100001]
+# print(intlist_gen(6, [1, 1, 1])) #[010101, 100101, 101001]
+# print(intlist_gen(7, [1, 2, 1])) #[0101101, 1001101, 1011001]
+# print(intlist_gen(7, [2, 1, 1])) #[0110101, 1100101, 1101001]
+# print(intlist_gen(7, [1, 1])) #[0000101]
 # print("\t One extra zero put")
