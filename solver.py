@@ -5,6 +5,14 @@ import griddler
 def toBin(intlist):
     return ''.join(str(e) for e in intlist)
 
+def bw_or(common, old):
+    strlen = len(common)
+#    print("common: ", common)
+#    print("old: ", old)
+    orlist = int(common, 2)|int(old, 2)
+    b_or = bin(orlist)
+    return b_or.zfill(strlen)
+
 #Input: list of int lists of equal length
 #Process: Converts each list to a binary string,
 #         then bitwise-ANDs them to find the common bits
@@ -180,55 +188,66 @@ def partial_solve_array(intlist, intreqs):
     intlistlist = intlist_gen(len(intlist), intreqs)
     if intlistlist == []:
         return intlist
+    
     intlistlist = remove_nonmatches(intlist, intlistlist)
     if intlistlist == []:
         return intlist
-    #print("Intlistlist before calling common: "+str(intlistlist))
+#    #print("Intlistlist before calling common: "+str(intlistlist))
     commonbits = common(intlistlist)
-    return list(commonbits)
+    return commonbits
 
 def partial_solve_gridd(griddler):
     for row in range(griddler.get_rows()):
         oldrow = griddler.get_row_gridd(row)
+#        print("old row",row,":", oldrow)
         newrow = partial_solve_array(oldrow, griddler.get_row_reqs(row))
-        griddler.set_row_gridd(row, newrow)
+        ornewrow = list(bw_or(toBin(newrow), toBin(oldrow)))
+#        print("ornewrow",row,":", ornewrow)
+        griddler.set_row_gridd(row, ornewrow)
     for col in range(griddler.get_cols()):
         oldcol = griddler.get_col_gridd(col)
+#        print("old col",col, ":", oldcol)
         newcol = partial_solve_array(oldcol, griddler.get_col_reqs(col))
-        griddler.set_col_gridd(col, newcol)
+        ornewcol = list(bw_or(toBin(newcol), toBin(oldcol)))
+#        print("ornewcol",col,":", ornewcol)
+        griddler.set_col_gridd(col, ornewcol)
 
 def test():
     pear = griddler.Griddler("pear_small_unsolved.gridd")
     peach = pear
     partial_solve_gridd(pear)
     # while(not pear == peach):
-    for i in range(30):
+    for i in range(10):
         peach = pear
         partial_solve_gridd(pear)
-        print("attempt")
+#        print("attempt")
     pear.save_to_file()
 
 test()
-# print(common(['1010', '1010', '1011']))
-# print(common(['0010', '0010', '0011']))
+## print(common(['1010', '1010', '1011']))
+## print(common(['0010', '0010', '0011']))
 
 
-# print("If multiple, but only one possible value")
-# print(intlist_gen(6, [1,2,1]))
-# print("If one, but only one possible value")
-# print(intlist_gen(6, [6]))
-# print("If one, but many possible values")
-# print(intlist_gen(6, [2]))
-# print(intlist_gen(6, [1]))
-# print(intlist_gen(6, [3]))
-# print("If many, but many possible values")
-# print("\t All zeros before one object")
-# print(intlist_gen(6, [2, 1])) #[001101, 110001, 011010, 110100]
-# print(intlist_gen(6, [1, 2])) #[001011, 100011, 010110, 101100]
-# print(intlist_gen(6, [2, 2])) #[011011, 110011]
-# print(intlist_gen(6, [1, 1])) #[000101, 100001]
-# print(intlist_gen(6, [1, 1, 1])) #[010101, 100101, 101001]
-# print(intlist_gen(7, [1, 2, 1])) #[0101101, 1001101, 1011001]
-# print(intlist_gen(7, [2, 1, 1])) #[0110101, 1100101, 1101001]
-# print(intlist_gen(7, [1, 1])) #[0000101]
-# print("\t One extra zero put")
+## print("If multiple, but only one possible value")
+## print(intlist_gen(6, [1,2,1]))
+## print("If one, but only one possible value")
+## print(intlist_gen(6, [6]))
+## print("If one, but many possible values")
+## print(intlist_gen(6, [2]))
+## print(intlist_gen(6, [1]))
+## print(intlist_gen(6, [3]))
+## print("If many, but many possible values")
+## print("\t All zeros before one object")
+## print(intlist_gen(6, [2, 1])) #[001101, 110001, 011010, 110100]
+## print(intlist_gen(6, [1, 2])) #[001011, 100011, 010110, 101100]
+## print(intlist_gen(6, [2, 2])) #[011011, 110011]
+## print(intlist_gen(6, [1, 1])) #[000101, 100001]
+## print(intlist_gen(6, [1, 1, 1])) #[010101, 100101, 101001]
+## print(intlist_gen(7, [1, 2, 1])) #[0101101, 1001101, 1011001]
+## print(intlist_gen(7, [2, 1, 1])) #[0110101, 1100101, 1101001]
+## print(intlist_gen(7, [1, 1])) #[0000101]
+## print("\t One extra zero put")
+
+four = intlist_gen(6, [4])
+##print(four)
+##print(common(four))
