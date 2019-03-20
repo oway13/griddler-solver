@@ -233,7 +233,7 @@ def test():
         print("attempt")
     pear.save_to_file()
 
-test()
+#test()
 ## print(common(['1010', '1010', '1011']))
 ## print(common(['0010', '0010', '0011']))
 
@@ -269,3 +269,27 @@ test()
 # print(fourtwo)
 # filt_fourtwo =  remove_nonmatches([0,0,0,0,0,0,0,0,0,0], fourtwo)
 # print(common(filt_fourtwo))
+
+# threetwo = intlist_gen(10, [3, 2])
+# print(threetwo)
+# filt_threetwo =  remove_nonmatches([0,0,0,0,0,0,0,0,0,0], threetwo)
+# print(filt_threetwo)
+# threetwo = list(common(filt_threetwo))
+# print(threetwo)
+
+# threetwo = intlist_gen(10, [3, 2])
+# print(threetwo)
+# filt_threetwo =  remove_nonmatches([0,0,0,0,1,1,0,0,1,0], threetwo)
+# print(filt_threetwo)
+# threetwo = list(common(filt_threetwo))
+# print(threetwo)
+
+# threetwo = remove_nonmatches([0,0,0,0,1,1,0,0,1,0], [[0, 0, 0, 0, 1, 1, 1, 0, 1, 1], [1, 1, 1, 0, 0, 0, 0, 0, 1, 1], [1, 1, 1, 0, 1, 1, 0, 0, 0, 0], [0, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 1, 1, 1, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 0, 0, 0, 1, 1, 0], [0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 1, 1, 1, 0, 1, 1, 0], [0, 0, 1, 1, 1, 0, 1, 1, 0, 0]])
+# print(threetwo)
+# print(common(threetwo))
+
+# print(toBin(threetwo[0]))
+# print(toBin(threetwo[1]))
+
+threetwo = intlist_gen(10, [3, 2])
+print([0,0,0,1,1,1,0,0,1,1] in threetwo)
