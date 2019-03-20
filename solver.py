@@ -192,8 +192,9 @@ def partial_solve_array(intlist, intreqs):
     intlistlist = remove_nonmatches(intlist, intlistlist)
     if intlistlist == []:
         return intlist
-#    #print("Intlistlist before calling common: "+str(intlistlist))
+#    print("Intlistlist before calling common: "+str(intlistlist))
     commonbits = common(intlistlist)
+#    print(commonbits)
     return commonbits
 
 def partial_solve_gridd(griddler):
@@ -201,16 +202,18 @@ def partial_solve_gridd(griddler):
         oldrow = griddler.get_row_gridd(row)
 #        print("old row",row,":", oldrow)
         newrow = partial_solve_array(oldrow, griddler.get_row_reqs(row))
-        ornewrow = list(bw_or(toBin(newrow), toBin(oldrow)))
+#        ornewrow = list(bw_or(toBin(newrow), toBin(oldrow)))
 #        print("ornewrow",row,":", ornewrow)
-        griddler.set_row_gridd(row, ornewrow)
+#        griddler.set_row_gridd(row, ornewrow)
+        griddler.set_row_gridd(row, list(newrow))
     for col in range(griddler.get_cols()):
         oldcol = griddler.get_col_gridd(col)
 #        print("old col",col, ":", oldcol)
         newcol = partial_solve_array(oldcol, griddler.get_col_reqs(col))
-        ornewcol = list(bw_or(toBin(newcol), toBin(oldcol)))
+#        ornewcol = list(bw_or(toBin(newcol), toBin(oldcol)))
 #        print("ornewcol",col,":", ornewcol)
-        griddler.set_col_gridd(col, ornewcol)
+#        griddler.set_col_gridd(col, ornewcol)
+        griddler.set_col_gridd(col, list(newcol))
 
 def test():
     pear = griddler.Griddler("pear_small_unsolved.gridd")
@@ -220,7 +223,7 @@ def test():
     for i in range(10):
         peach = pear
         partial_solve_gridd(pear)
-#        print("attempt")
+        print("attempt")
     pear.save_to_file()
 
 test()
@@ -248,6 +251,9 @@ test()
 ## print(intlist_gen(7, [1, 1])) #[0000101]
 ## print("\t One extra zero put")
 
-four = intlist_gen(6, [4])
-##print(four)
-##print(common(four))
+# four = intlist_gen(6, [4])
+# print(four)
+# print(common(four))
+# print(match([0,0,0,0,0,0],[0,0,1,1,0,0]))
+# filt_four =  remove_nonmatches([0,0,0,0,0,0], four)
+# print(filt_four)
