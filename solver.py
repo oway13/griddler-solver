@@ -170,6 +170,33 @@ def intlist_gen(listlen, intreqs):
                             #Add that many ones to the list
                             intlist.extend([1 for _ in range(intreqs[z_run])])
                     intlistlist.append(intlist)
+        z_combs_less = sorted_k_partitions(z_inter_list, holes-1)
+        for hole in range(holes):
+            for comb in z_combs_less:
+                intlist = []
+                #For each 0 run in one comb
+                for z_run in range(len(comb)):
+                    used_run = (z_run+hole)%(holes-1)
+                    #Add that many zeros to the list
+                    intlist.extend([0 for _ in range(len(comb[used_run]))])
+                    #For each 1 run in intreqs
+                    if not z_run == len(intreqs):
+                        #Add that many ones to the list
+                        intlist.extend([1 for _ in range(intreqs[z_run])])
+                intlistlist.append(intlist)
+        for hole in range(holes):
+            for comb in z_combs_less:
+                intlist = []
+                #For each 0 run in one comb
+                for z_run in range(len(comb)):
+                    used_run = (z_run+hole)%(holes-1)
+                    #Add that many zeros to the list
+                    intlist.extend([0 for _ in range(len(comb[used_run]))])
+                    #For each 1 run in intreqs
+                    if not z_run == len(intreqs):
+                        #Add that many ones to the list
+                        intlist.extend([1 for _ in range(intreqs[z_run])])
+                intlistlist.append(intlist)
 
     return intlistlist
 
@@ -233,7 +260,7 @@ def test():
         print("attempt")
     pear.save_to_file()
 
-#test()
+test()
 ## print(common(['1010', '1010', '1011']))
 ## print(common(['0010', '0010', '0011']))
 
@@ -291,5 +318,5 @@ def test():
 # print(toBin(threetwo[0]))
 # print(toBin(threetwo[1]))
 
-threetwo = intlist_gen(10, [3, 2])
-print([0,0,0,1,1,1,0,0,1,1] in threetwo)
+# threetwo = intlist_gen(10, [3, 2])
+# print([0,0,0,1,1,1,0,0,1,1] in threetwo)

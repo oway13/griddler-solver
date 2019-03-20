@@ -93,7 +93,7 @@ def generate(listlen, intreqs):
     z_combs = sorted_k_partitions(z_inter_list, holes)
     #For each possible 0 run spot (hole)
     for hole in range(holes):
-    #For comb each z_comb
+        #For comb each z_comb
         for comb in z_combs:
             intlist = []
             #For each 0 run in one comb
@@ -108,14 +108,50 @@ def generate(listlen, intreqs):
             intlistlist.append(intlist)
     return intlistlist
 
+def generate2(listlen, intreqs):
+    intlistlist = []
+    zeros = listlen - sum(intreqs)
+    holes = len(intreqs) + 1
+    z_inter_list = [0 for _ in range(zeros)]
+    z_combs_less = sorted_k_partitions(z_inter_list, holes-1)
+    for hole in range(holes):
+        for comb in z_combs_less:
+            intlist = []
+            #For each 0 run in one comb
+            for z_run in range(len(comb)):
+                used_run = (z_run+hole)%(holes-1)
+                #Add that many zeros to the list
+                intlist.extend([0 for _ in range(len(comb[used_run]))])
+                #For each 1 run in intreqs
+                if not z_run == len(intreqs):
+                    #Add that many ones to the list
+                    intlist.extend([1 for _ in range(intreqs[z_run])])
+            intlistlist.append(intlist)
+    for hole in range(holes):
+        for comb in z_combs_less:
+            intlist = []
+            #For each 0 run in one comb
+            for z_run in range(len(comb)):
+                used_run = (z_run+hole)%(holes-1)
+                #Add that many zeros to the list
+                intlist.extend([0 for _ in range(len(comb[used_run]))])
+                #For each 1 run in intreqs
+                if not z_run == len(intreqs):
+                    #Add that many ones to the list
+                    intlist.extend([1 for _ in range(intreqs[z_run])])
+            intlistlist.append(intlist)
 
+    return intlistlist
+        
 
-
-for groups in sorted_k_partitions([0,0,0,0,0,0], 3):
+for groups in sorted_k_partitions([0,0,0,0,0], 2):
          print(groups)
 
 #print(sorted_k_partitions([0,0,0,0,0,0], 3))
 
 
-for intlist in generate(12, [4, 2]):
+# for intlist in generate(10, [3, 2]):
+#     print(intlist)
+
+for intlist in generate2(10, [3, 2]):
     print(intlist)
