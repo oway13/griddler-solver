@@ -93,13 +93,14 @@ def generate(listlen, intreqs):
     z_combs = sorted_k_partitions(z_inter_list, holes)
     #For each possible 0 run spot (hole)
     for hole in range(holes):
-        #For comb each z_comb
+    #For comb each z_comb
         for comb in z_combs:
             intlist = []
             #For each 0 run in one comb
             for z_run in range(len(comb)):
+                used_run = (z_run+hole)%holes
                 #Add that many zeros to the list
-                intlist.extend([0 for _ in range(len(comb[z_run]))])
+                intlist.extend([0 for _ in range(len(comb[used_run]))])
                 #For each 1 run in intreqs
                 if not z_run == len(intreqs):
                     #Add that many ones to the list
@@ -110,11 +111,11 @@ def generate(listlen, intreqs):
 
 
 
-# for groups in sorted_k_partitions([0,0,0,0,0,0], 3):
-#         print(3, groups)
+for groups in sorted_k_partitions([0,0,0,0,0,0], 3):
+         print(groups)
 
 #print(sorted_k_partitions([0,0,0,0,0,0], 3))
 
 
-for intlist in generate(9, [2, 1]):
+for intlist in generate(12, [4, 2]):
     print(intlist)

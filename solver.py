@@ -150,19 +150,26 @@ def intlist_gen(listlen, intreqs):
         #Generate the rest of the combinations
         #For comb each z_comb
         holes = len(intreqs) + 1
+        print("holes: ", holes)
         z_inter_list = [0 for _ in range(zeros)]
+        print("z_inter_list: ", z_inter_list)
         z_combs = sorted_k_partitions(z_inter_list, holes)
-        for comb in z_combs:
-            intlist = []
-            #For each 0 run in one comb
-            for z_run in range(len(comb)):
-                #Add that many zeros to the list
-                intlist.extend([0 for _ in range(len(comb[z_run]))])
-                #For each 1 run in intreqs
-                if not z_run == len(intreqs):
-                    #Add that many ones to the list
-                    intlist.extend([1 for _ in range(intreqs[z_run])])
-            intlistlist.append(intlist)
+        print("Z_combs: ", z_combs)
+        if not zeros < holes:
+            for hole in range(holes):
+            #For comb each z_comb
+                for comb in z_combs:
+                    intlist = []
+                    #For each 0 run in one comb
+                    for z_run in range(len(comb)):
+                        used_run = (z_run+hole)%holes
+                        #Add that many zeros to the list
+                        intlist.extend([0 for _ in range(len(comb[used_run]))])
+                        #For each 1 run in intreqs
+                        if not z_run == len(intreqs):
+                            #Add that many ones to the list
+                            intlist.extend([1 for _ in range(intreqs[z_run])])
+                    intlistlist.append(intlist)
 
     return intlistlist
 
@@ -192,9 +199,9 @@ def partial_solve_array(intlist, intreqs):
     intlistlist = remove_nonmatches(intlist, intlistlist)
     if intlistlist == []:
         return intlist
-#    print("Intlistlist before calling common: "+str(intlistlist))
+    print("Intlistlist before calling common: "+str(intlistlist))
     commonbits = common(intlistlist)
-#    print(commonbits)
+    print(commonbits)
     return commonbits
 
 def partial_solve_gridd(griddler):
@@ -257,3 +264,8 @@ test()
 # print(match([0,0,0,0,0,0],[0,0,1,1,0,0]))
 # filt_four =  remove_nonmatches([0,0,0,0,0,0], four)
 # print(filt_four)
+
+# fourtwo = intlist_gen(10, [4, 2])
+# print(fourtwo)
+# filt_fourtwo =  remove_nonmatches([0,0,0,0,0,0,0,0,0,0], fourtwo)
+# print(common(filt_fourtwo))
