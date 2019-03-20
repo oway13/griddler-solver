@@ -150,11 +150,11 @@ def intlist_gen(listlen, intreqs):
         #Generate the rest of the combinations
         #For comb each z_comb
         holes = len(intreqs) + 1
-        print("holes: ", holes)
+        #print("holes: ", holes)
         z_inter_list = [0 for _ in range(zeros)]
-        print("z_inter_list: ", z_inter_list)
+        #print("z_inter_list: ", z_inter_list)
         z_combs = sorted_k_partitions(z_inter_list, holes)
-        print("Z_combs: ", z_combs)
+        #print("Z_combs: ", z_combs)
         if not zeros < holes:
             for hole in range(holes):
             #For comb each z_comb
@@ -195,7 +195,7 @@ def partial_solve_array(intlist, intreqs):
     intlistlist = intlist_gen(len(intlist), intreqs)
     if intlistlist == []:
         return intlist
-    
+    print("Intlistlist before filtering: ", intlistlist)
     intlistlist = remove_nonmatches(intlist, intlistlist)
     if intlistlist == []:
         return intlist
@@ -227,7 +227,7 @@ def test():
     peach = pear
     partial_solve_gridd(pear)
     # while(not pear == peach):
-    for i in range(10):
+    for i in range(1):
         peach = pear
         partial_solve_gridd(pear)
         print("attempt")
